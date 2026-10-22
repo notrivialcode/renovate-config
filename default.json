@@ -1,0 +1,80 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "notrivial shared policy: one grouped pull request a week, security fixes at once, nothing merges by itself.",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitsDisabled"
+  ],
+  "timezone": "Europe/Paris",
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "automerge": false,
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 6,
+  "prHourlyLimit": 0,
+  "rangeStrategy": "bump",
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 6am on the first day of the month"
+    ],
+    "commitMessageAction": "Refresh"
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": [
+      "dependencies",
+      "security"
+    ],
+    "schedule": [
+      "at any time"
+    ],
+    "minimumReleaseAge": "1 day"
+  },
+  "osvVulnerabilityAlerts": true,
+  "packageRules": [
+    {
+      "description": "All minor and patch updates of the week in one pull request.",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "weekly updates",
+      "groupSlug": "weekly"
+    },
+    {
+      "description": "A major version jump is its own pull request, labelled, never grouped.",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "addLabels": [
+        "major"
+      ]
+    },
+    {
+      "description": "Frameworks that need a real migration: majors wait for a decision on the dashboard.",
+      "matchPackageNames": [
+        "next",
+        "react",
+        "react-dom",
+        "sanity",
+        "vue",
+        "expo",
+        "react-native",
+        "flask"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}
